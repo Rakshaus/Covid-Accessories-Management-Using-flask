@@ -1,0 +1,3 @@
+cloud_config = {
+    'secure_connect_bundle': 'secureconnectraksha.zip'
+}
