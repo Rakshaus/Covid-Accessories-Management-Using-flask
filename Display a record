@@ -1,0 +1,17 @@
+@app.route('/display', methods=['GET'])
+def display():
+    session = cassandra_connect()
+    session.execute('USE "usa"')
+    rows = session.execute('SELECT cid, name, masks, sanitizer FROM covid')
+    
+    r = []
+    for covid_row in rows:
+        r.append({
+            'cid': covid_row.cid,
+            'name': covid_row.name,
+            'masks': covid_row.masks,
+            'sanitizer': covid_row.sanitizer
+        })
+    r = tuple(r)
+    
+    return render_template('disp.html', r=r)
