@@ -1,0 +1,19 @@
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    if request.method == 'GET':
+        return render_template("covid.html")
+    else:
+        cid = int(request.form['cid'])
+        name = str(request.form['name'])
+        masks = int(request.form['masks'])
+        sanitizer = int(request.form['sanitizer'])
+        
+        session = cassandra_connect()
+        session.execute('USE "usa"')
+        session.execute(
+            """
+            INSERT INTO covid (cid, name, masks, sanitizer) VALUES (%(cid)s, %(name)s, %(masks)s, %(sanitizer)s)
+            """,
+            {'cid': cid, 'name': name, 'masks': masks, 'sanitizer': sanitizer}
+        )
+        return "added"
