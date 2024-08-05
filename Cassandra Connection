@@ -1,0 +1,5 @@
+def cassandra_connect():
+    auth_provider = PlainTextAuthProvider('HspiukYujEjAZoluUPpFCsDwl', 'Qoq...')
+    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    session = cluster.connect('usa')
+    return session
