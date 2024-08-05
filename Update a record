@@ -1,0 +1,19 @@
+@app.route('/update', methods=['GET', 'POST'])
+def update():
+    if request.method == 'GET':
+        return render_template("covidup.html")
+    else:
+        cid = int(request.form['cid'])
+        name = request.form['name']
+        masks = int(request.form['masks'])
+        sanitizer = int(request.form['sanitizer'])
+        
+        session = cassandra_connect()
+        session.execute('USE "usa"')
+        session.execute(
+            """
+            UPDATE covid SET name=%(name)s, masks=%(masks)s, sanitizer=%(sanitizer)s WHERE cid=%(cid)s
+            """,
+            {'cid': cid, 'name': name, 'masks': masks, 'sanitizer': sanitizer}
+        )
+        return "updated"
