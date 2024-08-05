@@ -1,0 +1,16 @@
+@app.route('/delete', methods=['GET', 'POST'])
+def delete():
+    if request.method == 'GET':
+        return render_template("coviddel.html")
+    else:
+        cid = int(request.form['cid'])
+        
+        session = cassandra_connect()
+        session.execute('USE "usa"')
+        session.execute(
+            """
+            DELETE FROM covid WHERE cid=%(cid)s
+            """,
+            {'cid': cid}
+        )
+        return "deleted"
